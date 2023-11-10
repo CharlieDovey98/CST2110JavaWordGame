@@ -3,8 +3,8 @@ package formativetask1;
 public class GameManagement {
 
     private int gameEndValue = 200;
-    private int playerOneScore = 0;
-    private int playerTwoScore = 0;
+    static int playerOneScore = 0;
+    static int playerTwoScore = 0;
     private Turn whoseTurn;
     
     

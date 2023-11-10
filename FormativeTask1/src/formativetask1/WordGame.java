@@ -10,17 +10,16 @@ public class WordGame {
 
     static boolean playerOneInitalWord = false;
     static boolean playerTwoInitalWord = false;
-    char playerOneInitialwordLastChar = 'a';
-    StringBuilder scoreBoard = new StringBuilder(
+    private char playerOneInitialwordLastChar = 'a';
+    private StringBuilder scoreBoard = new StringBuilder(
             "------------------------------------------------------------\n"
-            + "| word | word total | running total |\n");
-    
-           /* + "------------------------------------------------------------\n"
+            + "| word                |      word total |   running total |\n");
+
+    /* + "------------------------------------------------------------\n"
             + "| ace (1 + 3 + 5) | 9 | 9 |\n"
             + "------------------------------------------------------------\n"
             + "| end (5 + 14 + 4) | 23 | 32 |\n"
             + "------------------------------------------------------------");*/
-    
 //FilePathing Information
     static String dataFile = System.getProperty("user.dir") + File.separator + "datafile.txt";
     //System.out.println("dataFile " + dataFile);
@@ -47,13 +46,18 @@ public class WordGame {
 
                 if (StartingWordIsValid(firstWord)) {
                     System.out.println("word exists and is lower than 20");
-                    //pass word to value method to assertain the value
-                    System.out.println("the value of your word is: " + value(firstWord)); // string builder here
-                    //add value to the players score
-                    gameManager.addToPlayerOneScore(value(firstWord));
-
+                    //pass word to wordValue method to assertain the wordValue
+                    System.out.println("the value of your word is: " + wordValue(firstWord));
+                    //add wordValue to the players score
+                    gameManager.addToPlayerOneScore(wordValue(firstWord));
                     //print expression, string builder, eg. cat (3+1+20), word total, running total
-                    
+                    scoreBoard.append("------------------------------------------------------------\n"
+                            + "| " + firstWord + "(" + characterValue(firstWord.charAt(0))
+                            + " + " + characterValue(firstWord.charAt(1)) + " + "
+                            + characterValue(firstWord.charAt(2)) + ")"
+                            + "      |               " + wordValue(firstWord)
+                            + " |               " + GameManagement.playerOneScore + " |" + "\n");
+                    System.out.println(scoreBoard.toString());
                     // set the char playerOneInitialwordLastChar to the last index of player ones word for use in player twos turn
                     playerOneInitialwordLastChar = (firstWord.charAt(2));
                     // change boolean expression playerOneInitalWord to true so their next words dont have to be < 20
@@ -70,14 +74,20 @@ public class WordGame {
 
                 if (StartingWordIsValid(firstWord) && startingWordCharacter(firstWord, playerOneInitialwordLastChar)) {
                     System.out.println("word exists and is lower than 20");
-                    //pass word to value method to assertain the value
-                    System.out.println("the value of your word is: " + value(firstWord)); // string builder here
-                    //add value to the players score
-                    gameManager.addToPlayerOneScore(value(firstWord));
-
+                    //pass word to wordValue method to assertain the wordValue
+                    System.out.println("the value of your word is: " + wordValue(firstWord));
+                    //add wordValue to the players score
+                    gameManager.addToPlayerTwoScore(wordValue(firstWord));
                     //print expression, string builder, eg. cat (3+1+20), word total, running total
+                    scoreBoard.append("------------------------------------------------------------\n"
+                            + "| " + firstWord + "(" + characterValue(firstWord.charAt(0))
+                            + " + " + characterValue(firstWord.charAt(1)) + " + "
+                            + characterValue(firstWord.charAt(2)) + ")"
+                            + "      |               " + wordValue(firstWord)
+                            + " |               " + GameManagement.playerOneScore + " |" + "\n");
+                    System.out.println(scoreBoard.toString());
                     // change boolean expression playerOneInitalWord to true so their next words dont have to be < 20
-                    playerOneInitalWord = true;
+                    playerTwoInitalWord = true;
                 } else {
                     System.out.println("word doesn't meet the criteria, please enter another 3 letter word");
                 }
@@ -89,8 +99,8 @@ public class WordGame {
 
                 if ((containsString(dataFile, word)) && (isValid(word))) {
                     System.out.println("word exists");
-                    //pass word to value method to assertain the value
-                    //add value to the players score
+                    //pass word to wordValue method to assertain the wordValue
+                    //add wordValue to the players score
                     //print expression eg. cat (3+1+20), word total, running total
                     //change turn
 
@@ -139,10 +149,10 @@ public class WordGame {
         // player ones word must be lower than 20, and be a valid word within datafile.txt
         // set game start to true
 
-        return (isValid(firstWord) && ((value(firstWord)) <= 20) && containsString(dataFile, firstWord));
+        return (isValid(firstWord) && ((wordValue(firstWord)) <= 20) && containsString(dataFile, firstWord));
     }
 
-    public int value(String word) {
+    public int wordValue(String word) {
         String alphabet = "abcdefghijklmnopqrstuvwxyz";
         int sum = 0;
         for (int i = 0; i < word.length(); i++) {
@@ -152,6 +162,12 @@ public class WordGame {
         }
 
         return sum;
+    }
+
+    public int characterValue(char character) {
+        String alphabet = "abcdefghijklmnopqrstuvwxyz";
+        int indexvalue = alphabet.indexOf(character);
+        return indexvalue + 1;
     }
 
     public boolean startingWordCharacter(String firstWord, char playerOneInitialwordLastChar) {
