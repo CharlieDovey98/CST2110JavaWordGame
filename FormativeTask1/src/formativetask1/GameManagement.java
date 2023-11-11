@@ -21,13 +21,13 @@ public class GameManagement {
     }
 
     public enum Turn {
-        PLAYERONE,
-        PLAYERTWO
+        playerOne,
+        playerTwo
     }
     
     public GameManagement() {
-        // setting the initial turn to PLAYERTWO
-        this.whoseTurn = Turn.PLAYERONE;
+        // setting the initial turn to playerTwo
+        this.whoseTurn = Turn.playerOne;
     }
     
     public Turn getCurrentTurn() {
@@ -37,10 +37,10 @@ public class GameManagement {
     
     public void changeTurn() {
         //if statement to change turn
-        if (whoseTurn == Turn.PLAYERONE) {
-            whoseTurn = Turn.PLAYERTWO;
+        if (whoseTurn == Turn.playerOne) {
+            whoseTurn = Turn.playerTwo;
         } else {
-            whoseTurn = Turn.PLAYERONE;
+            whoseTurn = Turn.playerOne;
         }
     }
 

@@ -15,14 +15,9 @@ public class WordGame {
             "------------------------------------------------------------\n"
             + "| word                |      word total |   running total |\n");
 
-    /* + "------------------------------------------------------------\n"
-            + "| ace (1 + 3 + 5) | 9 | 9 |\n"
-            + "------------------------------------------------------------\n"
-            + "| end (5 + 14 + 4) | 23 | 32 |\n"
-            + "------------------------------------------------------------");*/
-//FilePathing Information
+    //FilePathing Information
     static String dataFile = System.getProperty("user.dir") + File.separator + "datafile.txt";
-    //System.out.println("dataFile " + dataFile);
+    //System.out.println("dataFile: " + dataFile);
 
     public void start() {
 
@@ -52,15 +47,15 @@ public class WordGame {
                     gameManager.addToPlayerOneScore(wordValue(firstWord));
                     //print expression, string builder, eg. cat (3+1+20), word total, running total
                     scoreBoard.append("------------------------------------------------------------\n"
-                            + "| " + firstWord + "(" + characterValue(firstWord.charAt(0))
+                            + "| " + firstWord + "  (" + characterValue(firstWord.charAt(0))
                             + " + " + characterValue(firstWord.charAt(1)) + " + "
                             + characterValue(firstWord.charAt(2)) + ")"
-                            + "      |               " + wordValue(firstWord)
+                            + "    |               " + wordValue(firstWord)
                             + " |               " + GameManagement.playerOneScore + " |" + "\n");
                     System.out.println(scoreBoard.toString());
                     // set the char playerOneInitialwordLastChar to the last index of player ones word for use in player twos turn
                     playerOneInitialwordLastChar = (firstWord.charAt(2));
-                    // change boolean expression playerOneInitalWord to true so their next words dont have to be < 20
+                    // change boolean expression playerOneInitalWord to true so their next words dont have to be < 20. breaking this if statement
                     playerOneInitalWord = true;
                     System.out.println("Player 2 to choose their first word ...");
                 } else {
@@ -68,7 +63,8 @@ public class WordGame {
                 }
             } else if (playerTwoInitalWord == false) {
 
-                System.out.println("Enter a 3-letter word, which must have a value of 20 or less, and must start with the letter " + playerOneInitialwordLastChar + "\nor enter * to give up > ");// need to have a give up option via *
+                System.out.println("Enter a 3-letter word, which must have a value of 20 or less, and must start with the letter " 
+                        + playerOneInitialwordLastChar + "\nor enter * to give up > ");// need to have a give up option via *
                 String firstInputWord = sc.next();
                 String firstWord = firstInputWord.toLowerCase();
 
@@ -80,36 +76,49 @@ public class WordGame {
                     gameManager.addToPlayerTwoScore(wordValue(firstWord));
                     //print expression, string builder, eg. cat (3+1+20), word total, running total
                     scoreBoard.append("------------------------------------------------------------\n"
-                            + "| " + firstWord + "(" + characterValue(firstWord.charAt(0))
+                            + "| " + firstWord + "  (" + characterValue(firstWord.charAt(0))
                             + " + " + characterValue(firstWord.charAt(1)) + " + "
                             + characterValue(firstWord.charAt(2)) + ")"
-                            + "      |               " + wordValue(firstWord)
+                            + "    |               " + wordValue(firstWord)
                             + " |               " + GameManagement.playerOneScore + " |" + "\n");
                     System.out.println(scoreBoard.toString());
-                    // change boolean expression playerOneInitalWord to true so their next words dont have to be < 20
+                    // change boolean expression playerTwoInitalWord to true so their next words dont have to be < 20. breaking this if statement 
                     playerTwoInitalWord = true;
                 } else {
                     System.out.println("word doesn't meet the criteria, please enter another 3 letter word");
                 }
             } else {
 
-                System.out.println("Player 1 to choose a word ...");
+                System.out.println(gameManager.getCurrentTurn() + " choose a word ...");
                 String inputword = sc.next();
                 String word = inputword.toLowerCase();
 
                 if ((containsString(dataFile, word)) && (isValid(word))) {
                     System.out.println("word exists");
                     //pass word to wordValue method to assertain the wordValue
-                    //add wordValue to the players score
-                    //print expression eg. cat (3+1+20), word total, running total
-                    //change turn
-
+                    System.out.println("the value of your word is: " + wordValue(word));
+                    /*if (gameManager.getCurrentTurn() == (gameManager.Turn.playerOne)) {
+                        //add wordValue to the players score
+                        gameManager.addToPlayerOneScore(wordValue(word));
+                    } else {
+                        gameManager.addToPlayerTwoScore(wordValue(word));
+                    }*/
+                    scoreBoard.append("------------------------------------------------------------\n"
+                            + "| " + word + "  (" + characterValue(word.charAt(0))
+                            + " + " + characterValue(word.charAt(1)) + " + "
+                            + characterValue(word.charAt(2)) + ")"
+                            + "    |               " + wordValue(word)
+                            + " |               " + GameManagement.playerOneScore + " |" + "\n");
+                    System.out.println(scoreBoard.toString());
+                    gameManager.changeTurn();
                 } else {
                     System.out.println("word is not valid, please enter a 3 letter word");
                 }
 
             }
         }
+        System.out.println("That word brings the score to 200+ ... " + gameManager.getCurrentTurn() + " loses!");
+        System.out.println( gameManager.getCurrentTurn() + " Wins the game.");
     }
 
     public boolean gameStart() {
