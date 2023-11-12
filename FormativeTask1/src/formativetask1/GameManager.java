@@ -1,33 +1,37 @@
 package formativetask1;
 
-public class GameManagement {
+public class GameManager {
 
     private int gameEndValue = 200;
     private char forfeitCharacter = '*';
     public boolean forfeit = false;
-    static int playerOneScore = 0;
-    static int playerTwoScore = 0;
+    int gameScore = 0;
     private Turn whoseTurn;
+    public char playerOneInitialwordLastChar = 'a';
+    public boolean playerOneInitalWord = false;
+    public boolean playerTwoInitalWord = false;
+       
 
     public boolean isGameOver() {
-        return playerOneScore > gameEndValue || playerTwoScore > gameEndValue || forfeit == true;
+        return gameScore > gameEndValue || forfeit == true;
     }
 
-    public void addToPlayerScore(int score) {
-        System.out.println("player: " + getCurrentTurn());
-        if (whoseTurn == Turn.playerOne) {
-            playerOneScore += score;
-        } else {
-            playerTwoScore += score;
+    public void addToGameScore(int score) {
+            gameScore += score;
         }
-    }
+    
+    
+    public int checkGameScore() { 
+            return gameScore;
+        }
+    
 
     public enum Turn {
         playerOne,
         playerTwo
     }
 
-    public GameManagement() {
+    public GameManager() {
         // setting the initial turn to playerTwo
         this.whoseTurn = Turn.playerOne;
     }
@@ -54,6 +58,11 @@ public class GameManagement {
             }
         }
         return false;
+
+    }
+    
+    public boolean startingWordCharacter(String firstWord, char playerOneInitialwordLastChar) {
+        return (playerOneInitialwordLastChar == firstWord.charAt(0));
 
     }
 
