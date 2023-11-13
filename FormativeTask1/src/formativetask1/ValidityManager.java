@@ -1,4 +1,3 @@
-
 package formativetask1;
 
 import java.io.BufferedReader;
@@ -7,17 +6,15 @@ import java.io.FileReader;
 import java.util.regex.Pattern;
 
 public class ValidityManager {
-        ValueManager valueManager = new ValueManager();
-        ApplicationRunner applicationRunner = new ApplicationRunner();
-        
-        public String dataFile = System.getProperty("user.dir") + File.separator + "datafile.txt";
 
-    public boolean StartingWordIsValid(String firstWord) {
+    public String dataFile = System.getProperty("user.dir") + File.separator + "datafile.txt";
+
+    public boolean StartingWordIsValid(String firstWord, int wordValue) {
         // player ones word must be lower than 20, and be a valid word within datafile.txt
-        return (isValid(firstWord) && ((valueManager.wordValue(firstWord)) <= 20) && containsString(dataFile, firstWord));
+        return (isValid(firstWord) && (wordValue <= 20) && containsString(dataFile, firstWord));
     }
-    
-        public boolean isValid(String word) {
+
+    public boolean isValid(String word) {
         // set of rules for the word. (a to z) and 3 characters long.
         String regex = "^[a-z]{3}$";
 
@@ -28,8 +25,8 @@ public class ValidityManager {
         return pattern.matcher(word).matches();
 
     }
-        
-        public boolean containsString(String dataFile, String word) {
+
+    public boolean containsString(String dataFile, String word) {
         try {
             BufferedReader buff = new BufferedReader(new FileReader(dataFile));
             String s;
@@ -44,5 +41,5 @@ public class ValidityManager {
         }
         return false;
     }
-        
+
 }

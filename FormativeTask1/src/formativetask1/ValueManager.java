@@ -1,17 +1,14 @@
-
 package formativetask1;
 
-
 public class ValueManager {
-    
-private String alphabet = "abcdefghijklmnopqrstuvwxyz";
 
-    
+    private String alphabet = "abcdefghijklmnopqrstuvwxyz";
+
     public int characterValue(char character) {
         int indexvalue = alphabet.indexOf(character);
         return indexvalue + 1;
     }
-    
+
     public int wordValue(String word) {
         int sum = 0;
         for (int i = 0; i < word.length(); i++) {
@@ -22,5 +19,5 @@ private String alphabet = "abcdefghijklmnopqrstuvwxyz";
 
         return sum;
     }
-    
+
 }

@@ -4,12 +4,13 @@ public class GameManager {
 
     private int gameEndValue = 200;
     private char forfeitCharacter = '*';
-    public boolean forfeit = false;
-    int gameScore = 0;
+    private int gameScore = 0;
     private Turn whoseTurn;
+    
     public char playerOneInitialwordLastChar = 'a';
     public boolean playerOneInitalWord = false;
     public boolean playerTwoInitalWord = false;
+    public boolean forfeit = false;
        
 
     public boolean isGameOver() {

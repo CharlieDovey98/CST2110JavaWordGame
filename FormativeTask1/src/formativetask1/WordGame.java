@@ -6,7 +6,7 @@ public class WordGame {
 
     GameManager gameManager = new GameManager();
     ScoreboardManager scoreManager = new ScoreboardManager();
-    ValueManager valueManager = new ValueManager();  
+    ValueManager valueManager = new ValueManager();
     ValidityManager validityManager = new ValidityManager();
 
     public void start() {
@@ -18,37 +18,29 @@ public class WordGame {
                 + "\nKey: A = 1 point, B = 2 points... Z = 26 points, words can only be used once during the game!"
                 + "\nPlayerOne to start");
         System.out.println("Let's play...");
-        System.out.println(gameManager.getCurrentTurn());
 
         while (gameManager.isGameOver() == false) { // while loop as there are an unknown amount of rounds to be played
 
             // player one goes first, starting with their 'initial word'
             if (gameManager.playerOneInitalWord == false) {
-                System.out.println(gameManager.getCurrentTurn());
 
                 System.out.println("Enter a 3-letter word, which must have a value of 20 or less, or enter * to give up > ");// need to have a give up option via *
                 String firstInputWord = sc.next();
                 String firstWord = firstInputWord.toLowerCase();
+                // if player one forfeits using "*" in their input, the game ends by changing the forfeit boolean to true
                 if (gameManager.forfeitGame(firstWord)) {
                     gameManager.forfeit = true;
                 } else {
-                    if (validityManager.StartingWordIsValid(firstWord)) {
-                        System.out.println("word exists and is lower than 20");
-                        //pass word to wordValue method to assertain the wordValue
-                        System.out.println("the value of your word is: " + valueManager.wordValue(firstWord));
+                    // pass the word to the managers to check its a valid starting input
+                    if (validityManager.StartingWordIsValid(firstWord, valueManager.wordValue(firstWord))) {
+                        System.out.println("Your word exists and is lower than 20, its value is: " + valueManager.wordValue(firstWord));
                         //add wordValue to the players score
                         gameManager.addToGameScore(valueManager.wordValue(firstWord));
                         //print scoreboard with the formatted scoreboardrow
-                        String formattedScoreboardRowFirstWord = String.format("     | %s (%d + %d + %d) | %-14d | %-14d |%n",
-                                firstWord,
-                                valueManager.characterValue(firstWord.charAt(0)),
+                        scoreManager.updateScoreboardRow(firstWord, valueManager.characterValue(firstWord.charAt(0)),
                                 valueManager.characterValue(firstWord.charAt(1)),
-                                valueManager.characterValue(firstWord.charAt(2)),
-                                valueManager.wordValue(firstWord),
+                                valueManager.characterValue(firstWord.charAt(2)), valueManager.wordValue(firstWord),
                                 gameManager.checkGameScore());
-
-                        scoreManager.scoreboard.append("------------------------------------------------------------\n")
-                                .append(formattedScoreboardRowFirstWord);
                         System.out.println(scoreManager.scoreboard.toString());
                         // set the char playerOneInitialwordLastChar to the last index of player ones word for use in player twos turn
                         gameManager.playerOneInitialwordLastChar = (firstWord.charAt(2));
@@ -71,23 +63,16 @@ public class WordGame {
                 if (gameManager.forfeitGame(firstWord)) {
                     gameManager.forfeit = true;
                 } else {
-                    if (validityManager.StartingWordIsValid(firstWord) && gameManager.startingWordCharacter(firstWord, gameManager.playerOneInitialwordLastChar)) {
-                        System.out.println("word exists and is lower than 20");
-                        //pass word to wordValue method to assertain the wordValue
-                        System.out.println("the value of your word is: " + valueManager.wordValue(firstWord));
+                    if (validityManager.StartingWordIsValid(firstWord, (valueManager.wordValue(firstWord)))
+                            && gameManager.startingWordCharacter(firstWord, gameManager.playerOneInitialwordLastChar)) {
+                        System.out.println("Your word exists and is lower than 20, its value is: " + valueManager.wordValue(firstWord));
                         //add wordValue to the players score
                         gameManager.addToGameScore(valueManager.wordValue(firstWord));
                         //print expression, string builder, eg. cat (3+1+20), word total, running total
-                        String formattedScoreboardRowFirstWord = String.format("     | %s (%d + %d + %d) | %16d | %16d |%n",
-                                firstWord,
-                                valueManager.characterValue(firstWord.charAt(0)),
+                        scoreManager.updateScoreboardRow(firstWord, valueManager.characterValue(firstWord.charAt(0)),
                                 valueManager.characterValue(firstWord.charAt(1)),
-                                valueManager.characterValue(firstWord.charAt(2)),
-                                valueManager.wordValue(firstWord),
+                                valueManager.characterValue(firstWord.charAt(2)), valueManager.wordValue(firstWord),
                                 gameManager.checkGameScore());
-
-                        scoreManager.scoreboard.append("------------------------------------------------------------\n")
-                                .append(formattedScoreboardRowFirstWord);
                         System.out.println(scoreManager.scoreboard.toString());
                         // change boolean expression playerTwoInitalWord to true so their next words dont have to be < 20.
                         gameManager.playerTwoInitalWord = true; // breaks the if (playerTwoInitalWord == false){... statement
@@ -98,28 +83,21 @@ public class WordGame {
                 }
             } else {
 
-                System.out.println(gameManager.getCurrentTurn() + " choose a word ...");
+                System.out.println(gameManager.getCurrentTurn() + " to now choose any 3 letter word ...");
                 String inputword = sc.next();
                 String word = inputword.toLowerCase();
                 if (gameManager.forfeitGame(word)) {
                     gameManager.forfeit = true;
                 } else {
                     if ((validityManager.containsString(validityManager.dataFile, word)) && (validityManager.isValid(word))) {
-                        System.out.println("word exists");
-                        //pass word to wordValue method to assertain the wordValue
-                        System.out.println("the value of your word is: " + valueManager.wordValue(word));
+                        System.out.println("Your word exists and isnt a duplicate, its value is " + valueManager.wordValue(word));
                         gameManager.addToGameScore(valueManager.wordValue(word));
-                        String formattedScoreboardRow = String.format("     | %s (%d + %d + %d) | %16d | %16d |%n",
-                                word,
-                                valueManager.characterValue(word.charAt(0)),
+                        scoreManager.updateScoreboardRow(word, valueManager.characterValue(word.charAt(0)),
                                 valueManager.characterValue(word.charAt(1)),
-                                valueManager.characterValue(word.charAt(2)),
-                                valueManager.wordValue(word),
+                                valueManager.characterValue(word.charAt(2)), valueManager.wordValue(word),
                                 gameManager.checkGameScore());
-
-                        scoreManager.scoreboard.append("------------------------------------------------------------\n")
-                                .append(formattedScoreboardRow);
                         System.out.println(scoreManager.scoreboard.toString());
+
                         gameManager.changeTurn();
                     } else {
                         System.out.println("word is not valid, please enter a 3 letter word");
