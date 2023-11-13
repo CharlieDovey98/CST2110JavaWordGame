@@ -1,6 +1,7 @@
 package formativetask1;
 
 public class ScoreboardManager {
+
     // This class is to format and update the scoreboard 
     public StringBuilder scoreboard = new StringBuilder(
             "------------------------------------------------------------\n"
@@ -13,6 +14,6 @@ public class ScoreboardManager {
                 + "------------------------------------------------------------\n",
                 word, characterValuesString, wordValue, gameScore);
         scoreboard.append(rowFirstWord);
-        
+
     }
 }

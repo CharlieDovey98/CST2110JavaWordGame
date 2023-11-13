@@ -18,7 +18,6 @@ public class WordGame {
                 + "\nKey: A = 1 point, B = 2 points... Z = 26 points, words can only be used once during the game!"
                 + "\nPlayerOne to start");
         System.out.println("Let's play...");
-
         while (gameManager.isGameOver() == false) { // while loop as there are an unknown amount of rounds to be played
 
             // player one goes first, starting with their 'initial word'
@@ -32,7 +31,7 @@ public class WordGame {
                     gameManager.forfeit = true;
                 } else {
                     // pass the word to the managers to check its a valid starting input
-                    if (validityManager.StartingWordIsValid(firstWord, valueManager.wordValue(firstWord))) {
+                    if (validityManager.startingWordIsValid(firstWord, valueManager.wordValue(firstWord))) {
                         System.out.println("Your word exists and is lower than 20, its value is: " + valueManager.wordValue(firstWord));
                         //add wordValue to the players score
                         gameManager.addToGameScore(valueManager.wordValue(firstWord));
@@ -47,23 +46,24 @@ public class WordGame {
                         // change boolean expression playerOneInitalWord to true so their next words dont have to be < 20.
                         gameManager.playerOneInitalWord = true; // breaks the if (playerOneInitalWord == false){... statement
                         gameManager.changeTurn();
+                        // add firstWord to the list of words used throughout the game.
+                        validityManager.addUserInputToList(firstWord);
                         System.out.println("Player 2 to choose their first word ...");
                     } else {
                         System.out.println("word doesn't meet the criteria, please enter another 3 letter word");
                     }
                 }
             } else if (gameManager.playerTwoInitalWord == false) {
-                System.out.println(gameManager.getCurrentTurn());
 
                 System.out.println("Enter a 3-letter word, which must have a value of 20 or less, and must start with the letter "
-                        + gameManager.playerOneInitialwordLastChar + "\nor enter * to give up > ");// need to have a give up option via *
+                        + gameManager.playerOneInitialwordLastChar + "\nor enter * to give up > ");
                 String firstInputWord = sc.next();
                 String firstWord = firstInputWord.toLowerCase();
                 // Checking for the forfeit game character
                 if (gameManager.forfeitGame(firstWord)) {
                     gameManager.forfeit = true;
                 } else {
-                    if (validityManager.StartingWordIsValid(firstWord, (valueManager.wordValue(firstWord)))
+                    if (validityManager.startingWordIsValid(firstWord, (valueManager.wordValue(firstWord)))
                             && gameManager.startingWordCharacter(firstWord, gameManager.playerOneInitialwordLastChar)) {
                         System.out.println("Your word exists and is lower than 20, its value is: " + valueManager.wordValue(firstWord));
                         //add wordValue to the players score
@@ -77,6 +77,8 @@ public class WordGame {
                         // change boolean expression playerTwoInitalWord to true so their next words dont have to be < 20.
                         gameManager.playerTwoInitalWord = true; // breaks the if (playerTwoInitalWord == false){... statement
                         gameManager.changeTurn();
+                        // add firstWord to the list of words used throughout the game.
+                        validityManager.addUserInputToList(firstWord);
                     } else {
                         System.out.println("word doesn't meet the criteria, please enter another 3 letter word");
                     }
@@ -89,7 +91,7 @@ public class WordGame {
                 if (gameManager.forfeitGame(word)) {
                     gameManager.forfeit = true;
                 } else {
-                    if ((validityManager.containsString(validityManager.dataFile, word)) && (validityManager.isValid(word))) {
+                    if (validityManager.chosenWordIsValid(word)) {
                         System.out.println("Your word exists and isnt a duplicate, its value is " + valueManager.wordValue(word));
                         gameManager.addToGameScore(valueManager.wordValue(word));
                         scoreManager.updateScoreboardRow(word, valueManager.characterValue(word.charAt(0)),
@@ -97,10 +99,12 @@ public class WordGame {
                                 valueManager.characterValue(word.charAt(2)), valueManager.wordValue(word),
                                 gameManager.checkGameScore());
                         System.out.println(scoreManager.scoreboard.toString());
-
+                        // switch turn every round.
                         gameManager.changeTurn();
+                        // add word to the list of words used throughout the game.
+                        validityManager.addUserInputToList(word);
                     } else {
-                        System.out.println("word is not valid, please enter a 3 letter word");
+                        System.out.println("word is not valid, please enter a 3 letter word that hasn't been previously used.");
                     }
                 }
 
@@ -110,12 +114,12 @@ public class WordGame {
             System.out.println("GameOver, You have chosen to give up. The final score board looks like this: \n"
                     + scoreManager.scoreboard.toString());
             gameManager.changeTurn();
-            System.out.println(gameManager.getCurrentTurn() + " is the winner.");
+            System.out.println(gameManager.getCurrentTurn() + " is the winner.\nWords used this game: " + validityManager.getUserInputList());
         } else {
             gameManager.changeTurn();
             System.out.println("That word brings the score over 200... " + gameManager.getCurrentTurn() + " loses!");
             gameManager.changeTurn();
-            System.out.println(gameManager.getCurrentTurn() + " Wins the game.");
+            System.out.println(gameManager.getCurrentTurn() + " Wins the game.\nWords used this game: " + validityManager.getUserInputList());
         }
     }
 

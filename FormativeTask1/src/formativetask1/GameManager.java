@@ -6,26 +6,23 @@ public class GameManager {
     private char forfeitCharacter = '*';
     private int gameScore = 0;
     private Turn whoseTurn;
-    
+
     public char playerOneInitialwordLastChar = 'a';
     public boolean playerOneInitalWord = false;
     public boolean playerTwoInitalWord = false;
     public boolean forfeit = false;
-       
 
     public boolean isGameOver() {
         return gameScore > gameEndValue || forfeit == true;
     }
 
     public void addToGameScore(int score) {
-            gameScore += score;
-        }
-    
-    
-    public int checkGameScore() { 
-            return gameScore;
-        }
-    
+        gameScore += score;
+    }
+
+    public int checkGameScore() {
+        return gameScore;
+    }
 
     public enum Turn {
         playerOne,
@@ -61,7 +58,7 @@ public class GameManager {
         return false;
 
     }
-    
+
     public boolean startingWordCharacter(String firstWord, char playerOneInitialwordLastChar) {
         return (playerOneInitialwordLastChar == firstWord.charAt(0));
 
