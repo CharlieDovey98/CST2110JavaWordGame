@@ -64,7 +64,7 @@ public class WordGame {
                     gameManager.forfeit = true;
                 } else {
                     if (validityManager.startingWordIsValid(firstWord, (valueManager.wordValue(firstWord)))
-                            && gameManager.startingWordCharacter(firstWord, gameManager.playerOneInitialwordLastChar)) {
+                            && gameManager.startingWordCharacter(firstWord)) {
                         System.out.println("Your word exists and is lower than 20, its value is: " + valueManager.wordValue(firstWord));
                         //add wordValue to the players score
                         gameManager.addToGameScore(valueManager.wordValue(firstWord));

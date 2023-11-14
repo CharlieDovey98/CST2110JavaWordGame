@@ -2,7 +2,7 @@ package formativetask1;
 
 public class ValueManager {
 
-    private String alphabet = "abcdefghijklmnopqrstuvwxyz";
+    private final String alphabet = "abcdefghijklmnopqrstuvwxyz";
 
     public int characterValue(char character) {
         int indexvalue = alphabet.indexOf(character);

@@ -20,27 +20,30 @@ public class GameManager {
         gameScore += score;
     }
 
+    // Returns the gameScore int.
     public int checkGameScore() {
         return gameScore;
     }
 
+    // enum containing the two players.
     public enum Turn {
         playerOne,
         playerTwo
     }
 
+    // gives the ability to change who goes first.
     public GameManager() {
-        // setting the initial turn to playerTwo
+        // setting the initial turn to playerTwo.
         this.whoseTurn = Turn.playerOne;
     }
 
+    // returns the current players turn
     public Turn getCurrentTurn() {
-        // method to return the turn
         return whoseTurn;
     }
 
+    // method to change players turn.
     public void changeTurn() {
-        //if statement to change turn
         if (whoseTurn == Turn.playerOne) {
             whoseTurn = Turn.playerTwo;
         } else {
@@ -48,6 +51,7 @@ public class GameManager {
         }
     }
 
+    // method checking for the forfeit game character within the user string.
     public boolean forfeitGame(String word) {
         for (int i = 0; i < word.length(); i++) {
             char character = word.charAt(i);
@@ -59,7 +63,8 @@ public class GameManager {
 
     }
 
-    public boolean startingWordCharacter(String firstWord, char playerOneInitialwordLastChar) {
+    // checking the 2nd players word matches the last char from the 1st players initial word 
+    public boolean startingWordCharacter(String firstWord) {
         return (playerOneInitialwordLastChar == firstWord.charAt(0));
 
     }
