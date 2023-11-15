@@ -1,9 +1,7 @@
 package formativetask1;
 
+// A Class which calls the start of the game through the object WordGame start()
 public class ApplicationRunner {
-    // FilePathing Information
-    // private String dataFile = System.getProperty("user.dir") + File.separator + "datafile.txt";
-    // System.out.println("dataFile: " + dataFile);
 
     public static void main(String[] args) {
 
